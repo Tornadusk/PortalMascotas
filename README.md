@@ -10,12 +10,26 @@ Portal de Mascotas es una aplicación web que permite:
 - **Filtros avanzados**: Búsqueda y filtrado de mascotas por diferentes criterios
 - **Blog**: Artículos y noticias relacionadas con el cuidado de mascotas
 
+### ✨ Características Principales
+
+- **🔍 Sistema de Filtros Inteligente**: Búsqueda avanzada con múltiples criterios
+- **💾 Filtros Guardados**: Los usuarios pueden guardar y reutilizar filtros personalizados
+- **📊 Historial de Búsquedas**: Registro completo de todas las búsquedas realizadas
+- **✅ Validaciones Automáticas**: Prevención de solicitudes duplicadas o inválidas
+- **🎯 Constantes Centralizadas**: Sistema sin duplicación de datos
+- **🔗 Relaciones Complejas**: Modelos interconectados con integridad referencial
+- **📱 Interfaz Intuitiva**: Diseño centrado en la experiencia del usuario
+
 ## 🛠️ Tecnologías Utilizadas
 
 - **Backend**: Django 5.2.6
 - **Base de datos**: SQLite (desarrollo)
 - **Frontend**: HTML, CSS, JavaScript
 - **Python**: 3.11+
+- **Arquitectura**: Modelo-Vista-Template (MVT)
+- **ORM**: Django ORM con relaciones complejas
+- **Validaciones**: Validaciones automáticas en modelos
+- **Sistema de constantes**: Centralización de opciones compartidas
 
 ## 📦 Instalación
 
@@ -116,6 +130,112 @@ python manage.py runserver
 python manage.py createsuperuser
 ```
 
+## 🏗️ Arquitectura del Sistema
+
+### 📊 Modelos de Datos
+
+#### 🐕 Modelo Mascota (`registro_mascotas`)
+```python
+# Campos principales
+- nombre: Nombre de la mascota
+- tipo: Especie (perro, gato, otro)
+- raza: Raza específica
+- edad: Edad en meses
+- sexo: Macho o hembra
+- descripcion: Descripción detallada
+- ubicacion: Ciudad o ubicación
+- foto: Imagen de la mascota
+- estado: Disponible, adoptado, reservado
+- responsable: Usuario que registró la mascota
+- fecha_registro: Fecha de registro
+
+# Métodos de filtrado
+- filtrar_por_especie(tipo)
+- filtrar_por_edad(edad_min, edad_max)
+- filtrar_por_ubicacion(ubicacion)
+- filtrar_combinado(tipo, edad_min, edad_max, ubicacion)
+```
+
+#### 🏠 Modelo SolicitudAdopcion (`solicitud_adopcion`)
+```python
+# Campos principales
+- usuario: Usuario que solicita la adopción
+- mascota: Mascota a adoptar
+- mensaje: Motivo de la adopción
+- estado: Pendiente, aprobada, rechazada, cancelada
+- fecha_solicitud: Fecha de la solicitud
+- fecha_respuesta: Fecha de respuesta
+- respuesta: Respuesta del responsable
+
+# Validaciones automáticas
+- Un usuario no puede solicitar la misma mascota dos veces
+- Solo mascotas disponibles pueden ser solicitadas
+- Un usuario no puede solicitar adoptar su propia mascota
+```
+
+#### 🔍 Modelo FiltroBusqueda (`filtros`)
+```python
+# Filtros disponibles
+- tipo: Especie de mascota
+- sexo: Sexo de la mascota
+- edad_min/edad_max: Rango de edad
+- ubicacion: Ubicación geográfica
+- raza: Raza específica
+- texto_busqueda: Búsqueda de texto
+- incluir_descripcion: Incluir descripción en búsqueda
+
+# Funcionalidades
+- aplicar_filtro(): Ejecuta la búsqueda
+- get_criterios_activos(): Muestra filtros aplicados
+- Filtros favoritos y guardados
+- Historial de búsquedas
+```
+
+### 🎯 Sistema de Constantes Centralizadas
+
+El proyecto utiliza un sistema de constantes centralizadas en `portal_mascotas/constantes.py` para evitar duplicación de datos:
+
+```python
+# Tipos de mascotas
+TIPOS_MASCOTA = [('perro', 'Perro'), ('gato', 'Gato'), ('otro', 'Otro')]
+
+# Sexos
+SEXOS = [('macho', 'Macho'), ('hembra', 'Hembra')]
+
+# Estados de mascotas
+ESTADOS_MASCOTA = [('disponible', 'Disponible'), ('adoptado', 'Adoptado'), ('reservado', 'Reservado')]
+
+# Estados de solicitudes
+ESTADOS_SOLICITUD = [('pendiente', 'Pendiente'), ('aprobada', 'Aprobada'), ('rechazada', 'Rechazada'), ('cancelada', 'Cancelada')]
+
+# Rangos de edad comunes
+RANGOS_EDAD = [(0, 6, 'Cachorro'), (6, 12, 'Joven'), (12, 24, 'Adulto joven'), (24, 84, 'Adulto'), (84, 999, 'Senior')]
+
+# Ubicaciones comunes
+UBICACIONES_COMUNES = ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', ...]
+
+# Razas comunes
+RAZAS_PERROS = ['Labrador', 'Golden Retriever', 'Pastor Alemán', 'Bulldog', ...]
+RAZAS_GATOS = ['Persa', 'Siamés', 'Maine Coon', 'British Shorthair', ...]
+```
+
+### 🔄 Relaciones entre Modelos
+
+```
+User (Django Auth)
+├── mascotas_registradas (Mascota) → responsable
+├── solicitudes_adopcion (SolicitudAdopcion) → usuario
+├── filtros_busqueda (FiltroBusqueda) → usuario
+└── historial_busquedas (HistorialBusqueda) → usuario
+
+Mascota
+├── solicitudes (SolicitudAdopcion) → mascota
+└── Usado por FiltroBusqueda.aplicar_filtro()
+
+FiltroBusqueda
+└── historial_busquedas (HistorialBusqueda) → filtro_aplicado
+```
+
 ## 📱 Apps del Proyecto
 
 ### 🐕 Registro de Mascotas
@@ -130,17 +250,108 @@ python manage.py createsuperuser
 - Seguimiento de adopciones
 - Historial de adopciones
 
-### 🔍 Filtros
-- Búsqueda por raza
-- Filtro por edad
-- Filtro por tamaño
-- Filtro por ubicación
+### 🔍 Sistema de Filtros
+- **Filtros básicos**: Por especie (perro, gato, otro), sexo, edad y ubicación
+- **Filtros avanzados**: Por raza específica, búsqueda de texto en nombre/descripción
+- **Filtros guardados**: Los usuarios pueden guardar y reutilizar filtros personalizados
+- **Historial de búsquedas**: Registro de todas las búsquedas realizadas
+- **Filtros combinados**: Aplicar múltiples criterios simultáneamente
+- **Filtros favoritos**: Marcar filtros como favoritos para acceso rápido
 
 ### 📝 Blog
 - Artículos sobre cuidado de mascotas
 - Noticias del refugio
 - Consejos veterinarios
 - Historias de adopción exitosas
+
+## 💡 Ejemplos de Uso
+
+### 🔍 Uso del Sistema de Filtros
+
+```python
+from registro_mascotas.models import Mascota
+from filtros.models import FiltroBusqueda
+
+# Filtrar por especie
+perros = Mascota.filtrar_por_especie('perro')
+gatos = Mascota.filtrar_por_especie('gato')
+
+# Filtrar por edad
+cachorros = Mascota.filtrar_por_edad(edad_max=12)  # Menos de 1 año
+adultos = Mascota.filtrar_por_edad(edad_min=12, edad_max=84)  # 1-7 años
+
+# Filtrar por ubicación
+mascotas_bogota = Mascota.filtrar_por_ubicacion('Bogotá')
+
+# Filtro combinado
+perros_jovenes_bogota = Mascota.filtrar_combinado(
+    tipo='perro',
+    edad_max=24,
+    ubicacion='Bogotá'
+)
+
+# Crear y usar filtro personalizado
+filtro = FiltroBusqueda.objects.create(
+    nombre_filtro="Perros jóvenes en Bogotá",
+    tipo='perro',
+    edad_max=24,
+    ubicacion='Bogotá',
+    es_favorito=True
+)
+
+# Aplicar filtro guardado
+resultados = filtro.aplicar_filtro()
+print(f"Encontrados {resultados.count()} perros jóvenes en Bogotá")
+
+# Ver criterios activos
+criterios = filtro.get_criterios_activos()
+print("Criterios:", criterios)
+```
+
+### 🏠 Gestión de Solicitudes de Adopción
+
+```python
+from solicitud_adopcion.models import SolicitudAdopcion
+
+# Crear solicitud de adopción
+solicitud = SolicitudAdopcion.objects.create(
+    usuario=usuario,
+    mascota=mascota,
+    mensaje="Me encantaría adoptar esta mascota porque..."
+)
+
+# Aprobar solicitud
+solicitud.estado = 'aprobada'
+solicitud.respuesta = "¡Felicidades! Tu solicitud ha sido aprobada."
+solicitud.fecha_respuesta = timezone.now()
+solicitud.save()
+
+# Cambiar estado de la mascota
+mascota.estado = 'adoptado'
+mascota.save()
+```
+
+### 📊 Consultas Avanzadas
+
+```python
+# Mascotas más populares (más solicitudes)
+from django.db.models import Count
+mascotas_populares = Mascota.objects.annotate(
+    num_solicitudes=Count('solicitudes')
+).order_by('-num_solicitudes')[:10]
+
+# Usuarios más activos en adopciones
+usuarios_activos = User.objects.annotate(
+    num_solicitudes=Count('solicitudes_adopcion')
+).order_by('-num_solicitudes')[:10]
+
+# Estadísticas por tipo de mascota
+from django.db.models import Count
+estadisticas = Mascota.objects.values('tipo').annotate(
+    total=Count('id'),
+    disponibles=Count('id', filter=models.Q(estado='disponible'))
+)
+```
 
 ## 🔧 Configuración
 
