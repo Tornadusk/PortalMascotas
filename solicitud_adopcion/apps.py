@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MascotasConfig(AppConfig):
+class SolicitudAdopcionConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'mascotas'
+    name = 'solicitud_adopcion'

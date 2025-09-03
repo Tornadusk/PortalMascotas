@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mascotas',
+    'registro_mascotas',
     'filtros',
-    'adopciones',
+    'solicitud_adopcion',
     'blog',
 ]
 
