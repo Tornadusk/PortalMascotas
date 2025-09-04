@@ -3,6 +3,16 @@ from django.contrib.auth.models import User
 from portal_mascotas.constantes import TIPOS_MASCOTA, SEXOS, ESTADOS_MASCOTA
 
 class Mascota(models.Model):
+    """
+    Registro de mascotas disponibles para adopción.
+    
+    Este modelo almacena toda la información de las mascotas que están disponibles
+    para adopción, incluyendo sus características físicas, ubicación y estado.
+    Utiliza las constantes definidas en portal_mascotas.constantes para:
+    - TIPOS_MASCOTA: tipos de mascotas (perro, gato, otro)
+    - SEXOS: opciones de sexo (macho, hembra)
+    - ESTADOS_MASCOTA: estados de disponibilidad (disponible, adoptado, reservado)
+    """
 
     nombre = models.CharField(max_length=100)
     tipo = models.CharField(max_length=10, choices=TIPOS_MASCOTA)

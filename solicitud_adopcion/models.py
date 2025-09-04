@@ -5,6 +5,14 @@ from registro_mascotas.models import Mascota
 from portal_mascotas.constantes import ESTADOS_SOLICITUD
 
 class SolicitudAdopcion(models.Model):
+    """
+    Solicitud de adopción de mascotas.
+    
+    Gestiona el proceso de solicitud de adopción, permitiendo a los usuarios
+    solicitar adoptar una mascota específica y hacer seguimiento al estado
+    de su solicitud (pendiente, aprobada, rechazada, cancelada).
+    Utiliza las constantes definidas en portal_mascotas.constantes para los estados.
+    """
 
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solicitudes_adopcion')
     mascota = models.ForeignKey(Mascota, on_delete=models.CASCADE, related_name='solicitudes')

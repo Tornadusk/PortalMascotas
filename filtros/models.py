@@ -4,7 +4,16 @@ from registro_mascotas.models import Mascota
 from portal_mascotas.constantes import TIPOS_MASCOTA, SEXOS
 
 class FiltroBusqueda(models.Model):
-    """Modelo para guardar filtros de búsqueda de mascotas"""
+    """
+    Filtros por especie, edad, ubicación y otros criterios.
+    
+    Permite a los usuarios guardar y reutilizar filtros de búsqueda personalizados
+    para encontrar mascotas que cumplan con criterios específicos como tipo,
+    edad, ubicación, raza, etc.
+    Utiliza las constantes definidas en portal_mascotas.constantes para:
+    - TIPOS_MASCOTA: tipos de mascotas (perro, gato, otro)
+    - SEXOS: opciones de sexo (macho, hembra)
+    """
     
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='filtros_busqueda', null=True, blank=True)
     nombre_filtro = models.CharField(max_length=100, help_text="Nombre para identificar este filtro")
