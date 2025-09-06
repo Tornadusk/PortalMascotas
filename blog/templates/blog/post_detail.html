@@ -1,0 +1,17 @@
+<h1>{{ post.title }}</h1>
+<p><em>{{ post.category.name }}</em> — {{ post.published_at|date:"d/m/Y H:i" }}</p>
+{% if post.hero_image %}<img src="{{ post.hero_image.url }}" alt="">{% endif %}
+<div>{{ post.content|linebreaksbr }}</div>
+
+<h3>Comentarios</h3>
+<ul>
+  {% for c in post.comments %}
+    <li><strong>{{ c.name }}</strong> ({{ c.created_at|date:"d/m/Y H:i" }})<br>{{ c.body }}</li>
+  {% empty %}<li>Aún no hay comentarios.</li>{% endfor %}
+</ul>
+
+<h4>Deja tu comentario</h4>
+<form method="post">{% csrf_token %}
+  {{ form.as_p }}
+  <button>Enviar</button>
+</form>

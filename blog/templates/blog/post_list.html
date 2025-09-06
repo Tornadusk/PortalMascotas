@@ -1,0 +1,16 @@
+<h1>Blog: cuidados y consejos</h1>
+<form method="get">
+  <input type="search" name="q" value="{{ q|default:'' }}" placeholder="Buscar...">
+  <button>Buscar</button>
+</form>
+<ul>
+  {% for p in posts %}
+    <li>
+      <a href="{% url 'blog:post_detail' p.slug %}">{{ p.title }}</a>
+      — {{ p.category.name }} — {{ p.published_at|date:"d/m/Y H:i" }}
+      {% if p.tags %}<small>tags: {{ p.tags|join:", " }}</small>{% endif %}
+    </li>
+  {% empty %}
+    <li>Sin publicaciones.</li>
+  {% endfor %}
+</ul>
