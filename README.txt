@@ -184,7 +184,7 @@ pip uninstall -r requirements.txt -y
 ## 🏗️ Estructura del Proyecto
 
 ```
-portal_mascotas/
+PortalMascotas/
 ├── registro_mascotas/     # App para registro de mascotas
 ├── solicitud_adopcion/    # App para solicitudes de adopción
 ├── filtros/               # App para filtros y búsquedas
@@ -529,6 +529,178 @@ Si tienes preguntas o sugerencias, no dudes en contactarnos:
 - Django Software Foundation
 - Comunidad de Python
 - Todos los contribuidores del proyecto
+
+## 📊 Modelo Entidad-Relación (M.E.R)
+
+### 🏗️ Diagrama de Entidades
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│     Usuario     │    │     Mascota     │    │ Solicitud_      │
+│                 │    │                 │    │ Adopcion        │
+├─────────────────┤    ├─────────────────┤    ├─────────────────┤
+│ id_usuario (PK) │    │ id_mascota (PK) │    │ id_solicitud    │
+│ username        │    │ nombre          │    │ (PK)            │
+│ email           │    │ tipo            │    │ id_usuario (FK) │
+│ password        │    │ raza            │    │ id_mascota (FK) │
+│ fecha_creacion  │    │ edad            │    │ mensaje         │
+│ fecha_actualiz. │    │ sexo            │    │ fecha_solicitud │
+└─────────────────┘    │ descripcion     │    │ fecha_respuesta │
+         │              │ ubicacion       │    │ estado          │
+         │              │ foto            │    │ respuesta       │
+         │              │ estado          │    └─────────────────┘
+         │              │ id_responsable  │             │
+         │              │ (FK)            │             │
+         │              └─────────────────┘             │
+         │                       │                      │
+         │                       │                      │
+         │              ┌─────────────────┐             │
+         │              │ Filtro_Busqueda │             │
+         │              │                 │             │
+         │              ├─────────────────┤             │
+         │              │ id_filtro (PK)  │             │
+         │              │ id_usuario (FK) │             │
+         │              │ tipo_mascota    │             │
+         │              │ sexo            │             │
+         │              │ edad_min        │             │
+         │              │ edad_max        │             │
+         │              │ ubicacion       │             │
+         │              └─────────────────┘             │
+         │                       │                      │
+         │                       │                      │
+         │              ┌─────────────────┐             │
+         │              │ Historial_      │             │
+         │              │ Busqueda        │             │
+         │              │                 │             │
+         │              ├─────────────────┤             │
+         │              │ id_historial    │             │
+         │              │ (PK)            │             │
+         │              │ id_usuario (FK) │             │
+         │              │ id_mascota (FK) │             │
+         │              │ fecha_busqueda  │             │
+         │              │ criterios_busq. │             │
+         │              └─────────────────┘             │
+         │                       │                      │
+         └───────────────────────┼──────────────────────┘
+                                 │
+                                 │
+                    ┌─────────────────┐
+                    │     Blog        │
+                    │   (Opcional)    │
+                    │                 │
+                    ├─────────────────┤
+                    │ id_post (PK)    │
+                    │ titulo          │
+                    │ contenido       │
+                    │ autor (FK)      │
+                    │ fecha_public.   │
+                    │ estado          │
+                    └─────────────────┘
+```
+
+### 🔗 Relaciones Implementadas
+
+| Entidad 1 | Relación | Entidad 2 | Descripción |
+|-----------|----------|-----------|-------------|
+| Usuario | 1:N | Mascota | Un usuario puede registrar múltiples mascotas |
+| Usuario | 1:N | Solicitud_Adopcion | Un usuario puede hacer múltiples solicitudes |
+| Mascota | 1:N | Solicitud_Adopcion | Una mascota puede tener múltiples solicitudes |
+| Usuario | 1:N | Filtro_Busqueda | Un usuario puede crear múltiples filtros |
+| Usuario | 1:N | Historial_Busqueda | Un usuario tiene múltiples búsquedas |
+| Mascota | 1:N | Historial_Busqueda | Una mascota aparece en múltiples búsquedas |
+| Usuario | 1:N | Blog (Post) | Un usuario puede escribir múltiples posts |
+
+### 📋 Campos Clave por Entidad
+
+#### 👤 Usuario
+- **PK**: `id_usuario` (auto-incremento)
+- **Únicos**: `username`, `email`
+- **Obligatorios**: `username`, `email`, `password`
+- **Auditoría**: `fecha_creacion`, `fecha_actualizacion`
+
+#### 🐕 Mascota
+- **PK**: `id_mascota` (auto-incremento)
+- **FK**: `id_responsable` → Usuario
+- **Obligatorios**: `nombre`, `tipo`, `responsable`
+- **Opcionales**: `foto`, `descripcion`, `raza`
+
+#### 📝 Solicitud_Adopcion
+- **PK**: `id_solicitud` (auto-incremento)
+- **FK**: `id_usuario` → Usuario, `id_mascota` → Mascota
+- **Estados**: `pendiente`, `aprobada`, `rechazada`, `cancelada`
+- **Validaciones**: No duplicar solicitudes del mismo usuario para la misma mascota
+
+#### 🔍 Filtro_Busqueda
+- **PK**: `id_filtro` (auto-incremento)
+- **FK**: `id_usuario` → Usuario
+- **Funcionalidad**: Guardar criterios de búsqueda personalizados
+
+#### 📊 Historial_Busqueda
+- **PK**: `id_historial` (auto-incremento)
+- **FK**: `id_usuario` → Usuario, `id_mascota` → Mascota
+- **Propósito**: Registrar todas las búsquedas realizadas
+
+## 🏗️ Estructura Completa del Proyecto
+
+```
+PortalMascotas/
+├── registro_mascotas/          # App para registro de mascotas
+│   ├── models.py              # Modelo Mascota
+│   ├── views.py               # Vistas para gestión de mascotas
+│   ├── admin.py               # Configuración del admin
+│   └── migrations/            # Migraciones de base de datos
+├── solicitud_adopcion/        # App para solicitudes de adopción
+│   ├── models.py              # Modelo SolicitudAdopcion
+│   ├── views.py               # Vistas para solicitudes
+│   ├── urls.py                # URLs de la app
+│   ├── admin.py               # Configuración del admin
+│   ├── templates/             # Templates HTML
+│   │   └── solicitud_adopcion/
+│   ├── static/                # Archivos estáticos (CSS, JS)
+│   │   └── solicitud_adopcion/
+│   └── migrations/            # Migraciones de base de datos
+├── filtros/                   # App para filtros y búsquedas
+│   ├── models.py              # Modelos FiltroBusqueda y HistorialBusqueda
+│   ├── views.py               # Vistas para filtros
+│   └── migrations/            # Migraciones de base de datos
+├── login/                     # App para autenticación
+│   ├── models.py              # Modelo Usuario personalizado
+│   ├── views.py               # Vistas de login, registro, perfil
+│   ├── urls.py                # URLs de autenticación
+│   ├── admin.py               # Configuración del admin
+│   ├── templates/             # Templates de login y registro
+│   │   └── login/
+│   └── migrations/            # Migraciones de base de datos
+├── blog/                      # App para blog y artículos (deshabilitada)
+│   ├── models.py              # Modelos Post, Category, Comment
+│   ├── views.py               # Vistas del blog
+│   ├── urls.py                # URLs del blog
+│   ├── admin.py               # Configuración del admin
+│   ├── templates/             # Templates del blog
+│   │   └── blog/
+│   └── migrations/            # Migraciones de base de datos
+├── portal_mascotas/           # Configuración del proyecto principal
+│   ├── settings.py            # Configuraciones del proyecto
+│   ├── urls.py                # URLs principales
+│   ├── wsgi.py                # Configuración WSGI
+│   ├── asgi.py                # Configuración ASGI
+│   ├── constantes.py          # Constantes centralizadas
+│   ├── templates/             # Templates globales
+│   │   └── portal_mascotas/
+│   └── views.py               # Vistas principales (dashboard)
+├── static/                    # Archivos estáticos globales
+│   ├── css/                   # CSS globales
+│   │   ├── main.css           # Estilos principales
+│   │   └── auth.css           # Estilos de autenticación
+│   └── js/                    # JavaScript global
+│       ├── main.js            # JS principal
+│       └── auth.js            # JS de autenticación
+├── templates/                 # Templates globales (si se usa)
+├── venv/                      # Entorno virtual (no incluir en Git)
+├── manage.py                  # Script de administración de Django
+├── requirements.txt           # Dependencias del proyecto
+└── README.txt                 # Documentación del proyecto
+```
 
 ---
 
