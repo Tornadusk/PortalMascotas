@@ -55,10 +55,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'portal_mascotas.urls'
 
+# Configuración de templates
+# DIRS: Directorio global de templates (PortalMascotas/templates/)
+# APP_DIRS: True permite buscar templates en cada app/templates/
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -10,16 +10,6 @@ Portal de Mascotas es una aplicación web que permite:
 - **Filtros avanzados**: Búsqueda y filtrado de mascotas por diferentes criterios
 - **Blog**: Artículos y noticias relacionadas con el cuidado de mascotas
 
-### ✨ Características Principales
-
-- **🔍 Sistema de Filtros Inteligente**: Búsqueda avanzada con múltiples criterios
-- **💾 Filtros Guardados**: Los usuarios pueden guardar y reutilizar filtros personalizados
-- **📊 Historial de Búsquedas**: Registro completo de todas las búsquedas realizadas
-- **✅ Validaciones Automáticas**: Prevención de solicitudes duplicadas o inválidas
-- **🎯 Constantes Centralizadas**: Sistema sin duplicación de datos
-- **🔗 Relaciones Complejas**: Modelos interconectados con integridad referencial
-- **📱 Interfaz Intuitiva**: Diseño centrado en la experiencia del usuario
-
 ## 🛠️ Tecnologías Utilizadas
 
 - **Backend**: Django 5.2.6
@@ -31,62 +21,164 @@ Portal de Mascotas es una aplicación web que permite:
 - **Validaciones**: Validaciones automáticas en modelos
 - **Sistema de constantes**: Centralización de opciones compartidas
 
-## 📦 Instalación
+### ✨ Características Principales
 
-### Prerrequisitos
+- **🔍 Sistema de Filtros Inteligente**: Búsqueda avanzada con múltiples criterios
+- **💾 Filtros Guardados**: Los usuarios pueden guardar y reutilizar filtros personalizados
+- **📊 Historial de Búsquedas**: Registro completo de todas las búsquedas realizadas
+- **✅ Validaciones Automáticas**: Prevención de solicitudes duplicadas o inválidas
+- **🎯 Constantes Centralizadas**: Sistema sin duplicación de datos
+- **🔗 Relaciones Complejas**: Modelos interconectados con integridad referencial
+- **📱 Interfaz Intuitiva**: Diseño centrado en la experiencia del usuario
 
-- Python 3.11 o superior
-- pip (gestor de paquetes de Python)
-- Git
+## 📦 Dependencias y Instalación Rápida
 
-### Pasos de Instalación
+### 📋 Archivo requirements.txt
+El proyecto incluye un archivo `requirements.txt` con todas las dependencias necesarias:
 
-1. **Clonar el repositorio**
+```
+Django==5.2.6    Es: Framework web principal para crear aplicaciones
+asgiref==3.9.1   Es: Librería para comunicación asíncrona y WebSockets
+sqlparse==0.5.3  Es: Parser SQL para interpretar consultas de base de datos
+tzdata==2025.2   Es: Base de datos de zonas horarias mundiales
+```
+
+### 📝 ¿Cómo usar requirements.txt?
+
+**Para instalar dependencias:**
+```bash
+pip install -r requirements.txt
+```
+
+**Para generar requirements.txt (después de instalar nuevas librerías):**
+```bash
+pip freeze > requirements.txt
+```
+
+**Para ver dependencias instaladas:**
+```bash
+pip list
+```
+
+**Para desinstalar todas las dependencias:**
+```bash
+pip uninstall -r requirements.txt -y
+```
+
+### 🚀 Instalación Rápida (4 pasos)
+
+1. **Obtener el proyecto** (ver paso 2.1 de la instalación completa)
+   ```bash
+   # Opción A: Clonar con Git
+   git clone https://github.com/Tornadusk/PortalMascotas.git
+   cd PortalMascotas
+   
+   # Opción B: Descargar desde https://github.com/Tornadusk/PortalMascotas
+   ```
+
+2. **Activar el entorno virtual** (ver paso 2.2 de la instalación completa)
+   ```bash
+   # Linux/Mac
+   source venv/bin/activate
+   
+   # Windows
+   venv\Scripts\activate
+   ```
+
+3. **Instalar dependencias**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Verificar instalación**
+   ```bash
+   python manage.py check
+   ```
+
+## 🚀 Instalación Completa
+
+### 1. Prerrequisitos
+
+**1.1. Instalar Python**
+- Descargar desde: https://python.org
+- Versión recomendada: Python 3.11 o superior
+- ✅ Marcar "Add Python to PATH" durante la instalación
+- Verificar instalación: `python --version`
+
+**1.2. Verificar pip**
+- pip se instala automáticamente con Python
+- Verificar: `pip --version`
+
+**1.3. Instalar Git**
+- Descargar desde: https://git-scm.com
+- Verificar: `git --version`
+
+### 2. Pasos de Instalación
+
+**2.1. Obtener el proyecto**
+
+**Opción A: Clonar con Git (recomendado)**
    ```bash
    git clone https://github.com/Tornadusk/PortalMascotas.git
    cd PortalMascotas
    ```
 
-2. **Crear un entorno virtual**
-   ```bash
-   python -m venv venv
-   ```
+**Opción B: Descargar desde GitHub**
+   - Ir a: https://github.com/Tornadusk/PortalMascotas
+   - Hacer clic en "Code" → "Download ZIP"
+   - Extraer el archivo ZIP
+   - Abrir terminal en la carpeta extraída
 
-3. **Activar el entorno virtual**
-   
-   **En Windows:**
+**2.2. Crear y activar entorno virtual**
    ```bash
+   # Crear entorno virtual
+   python -m venv venv
+   
+   # Activar (Linux/Mac)
+   source venv/bin/activate
+   
+   # Activar (Windows)
    venv\Scripts\activate
    ```
+
+**2.3. Instalar dependencias**
+
+**Opción A: Instalar todas las dependencias (recomendado)**
+   ```bash
+   # Instalar todas las dependencias del proyecto
+   pip install -r requirements.txt
    
-   **En Linux/Mac:**
-   ```bash
-   source venv/bin/activate
+   # Verificar que se instalaron correctamente
+   pip list
    ```
 
-4. **Instalar dependencias**
+**Opción B: Instalar Django manualmente**
    ```bash
+   # Instalar solo Django (instala dependencias automáticamente)
    pip install django
+   
+   # Verificar instalación
+   python -m django --version
    ```
 
-5. **Aplicar migraciones**
+**2.4. Configurar base de datos**
    ```bash
    python manage.py migrate
    ```
 
-6. **Crear un superusuario (opcional)**
+**2.5. Crear superusuario (opcional)**
    ```bash
    python manage.py createsuperuser
    ```
 
-7. **Ejecutar el servidor de desarrollo**
+**2.6. Ejecutar servidor**
    ```bash
    python manage.py runserver
    ```
 
-8. **Acceder a la aplicación**
-   
-   Abre tu navegador y ve a: `http://127.0.0.1:8000/`
+**2.7. Acceder a la aplicación**
+   - URL: `http://127.0.0.1:8000/`
+   - Admin: `http://127.0.0.1:8000/admin/`
 
 ## 🏗️ Estructura del Proyecto
 
@@ -122,7 +214,7 @@ python manage.py migrate
 
 ### Administración
 ```bash
-# Acceder al panel de administración
+# Ejecutar servidor y acceder al admin
 python manage.py runserver
 # Luego ir a: http://127.0.0.1:8000/admin/
 
