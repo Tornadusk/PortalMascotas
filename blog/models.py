@@ -1,3 +1,12 @@
+# ⚠️ NOTA: Este modelo tiene dependencias de MongoDB que NO se deben usar en este proyecto
+# Las importaciones de django_mongodb_backend generan error porque no está instalado
+# Este archivo está comentado/deshabilitado para evitar errores del servidor
+# Si se necesita usar el blog, cambiar la forma en que trabaja el modelo o instalar: pip install django-mongodb-backend
+# En nuestro caso actual NO se debe usar este modelo
+#
+# 📝 NOTA ADICIONAL: Este modelo también usa el campo 'author' que referencia a AUTH_USER_MODEL
+# Si se habilita el blog, asegurarse de que funcione correctamente con el modelo Usuario personalizado
+
 from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
