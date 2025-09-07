@@ -37,11 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'portal_mascotas',  # App principal del proyecto
     'registro_mascotas',
     'filtros',
     'solicitud_adopcion',
-    'blog',
+    'login',
+    # 'blog',  # Comentado temporalmente por dependencias de MongoDB
 ]
+
+# Configuración del modelo de usuario personalizado
+AUTH_USER_MODEL = 'login.Usuario'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -109,13 +114,20 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
+# Idioma del proyecto - se puede cambiar a 'es-es' para español
 LANGUAGE_CODE = 'en-us'
 
+# Zona horaria - se puede cambiar a 'America/Mexico_City' para México
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_TZ = True
+
+# URLs de autenticación
+LOGIN_URL = '/accounts/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 
 # Static files (CSS, JavaScript, Images)

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from portal_mascotas.constantes import TIPOS_MASCOTA, SEXOS, ESTADOS_MASCOTA
 
 class Mascota(models.Model):
@@ -24,7 +24,7 @@ class Mascota(models.Model):
     foto = models.ImageField(upload_to='mascotas/', blank=True, null=True)
     estado = models.CharField(max_length=15, choices=ESTADOS_MASCOTA, default='disponible')
     fecha_registro = models.DateTimeField(auto_now_add=True)
-    responsable = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mascotas_registradas')
+    responsable = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='mascotas_registradas')
     
     class Meta:
         verbose_name = "Mascota"

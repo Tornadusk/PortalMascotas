@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from registro_mascotas.models import Mascota
 from portal_mascotas.constantes import ESTADOS_SOLICITUD
@@ -14,7 +14,7 @@ class SolicitudAdopcion(models.Model):
     Utiliza las constantes definidas en portal_mascotas.constantes para los estados.
     """
 
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solicitudes_adopcion')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='solicitudes_adopcion')
     mascota = models.ForeignKey(Mascota, on_delete=models.CASCADE, related_name='solicitudes')
     mensaje = models.TextField(help_text="Motivo por el cual quieres adoptar esta mascota")
     estado = models.CharField(max_length=15, choices=ESTADOS_SOLICITUD, default='pendiente')

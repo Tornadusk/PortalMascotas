@@ -41,6 +41,7 @@ Django==5.2.6    Es: Framework web principal para crear aplicaciones
 asgiref==3.9.1   Es: Librería para comunicación asíncrona y WebSockets
 sqlparse==0.5.3  Es: Parser SQL para interpretar consultas de base de datos
 tzdata==2025.2   Es: Base de datos de zonas horarias mundiales
+Pillow==11.3.0   Es: Librería para procesamiento de imágenes (ImageField)
 ```
 
 ### 📝 ¿Cómo usar requirements.txt?
@@ -209,6 +210,31 @@ python manage.py check
 python manage.py makemigrations
 
 # Aplicar migraciones
+python manage.py migrate
+
+# ⚠️ SOLUCIÓN DE ERRORES DE MIGRACIONES
+# Si obtienes error "InconsistentMigrationHistory" al crear migraciones:
+# 1. Eliminar la base de datos
+del db.sqlite3
+
+# 2. Crear migraciones nuevamente
+python manage.py makemigrations
+
+# 3. Aplicar migraciones
+python manage.py migrate
+
+# 4. Crear superusuario
+python manage.py createsuperuser
+
+# 📝 NOTA: Si solo se crean migraciones para algunas apps:
+# Crear migraciones para todas las apps específicamente:
+python manage.py makemigrations registro_mascotas
+python manage.py makemigrations solicitud_adopcion
+python manage.py makemigrations filtros
+python manage.py makemigrations login
+python manage.py makemigrations blog
+
+# Luego aplicar todas las migraciones:
 python manage.py migrate
 ```
 

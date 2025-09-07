@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from registro_mascotas.models import Mascota
 from portal_mascotas.constantes import TIPOS_MASCOTA, SEXOS
 
@@ -15,7 +15,7 @@ class FiltroBusqueda(models.Model):
     - SEXOS: opciones de sexo (macho, hembra)
     """
     
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='filtros_busqueda', null=True, blank=True)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='filtros_busqueda', null=True, blank=True)
     nombre_filtro = models.CharField(max_length=100, help_text="Nombre para identificar este filtro")
     
     # Filtros por características
@@ -103,7 +103,7 @@ class FiltroBusqueda(models.Model):
 class HistorialBusqueda(models.Model):
     """Modelo para guardar el historial de búsquedas realizadas"""
     
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='historial_busquedas')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='historial_busquedas')
     filtro_aplicado = models.ForeignKey(FiltroBusqueda, on_delete=models.CASCADE, null=True, blank=True)
     criterios_busqueda = models.JSONField(help_text="Criterios de búsqueda aplicados")
     resultados_encontrados = models.PositiveIntegerField(default=0)
