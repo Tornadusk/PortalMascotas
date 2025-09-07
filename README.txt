@@ -1,4 +1,4 @@
-# Portal de Mascotas 🐾
+# Portal de Mascotas 🐾🐾
 
 Un portal web desarrollado en Django para la gestión y adopción de mascotas.
 
