@@ -24,6 +24,6 @@ urlpatterns = [
     path('', views.dashboard, name='dashboard'),
     path('admin/', admin.site.urls),
     path('accounts/', include('login.urls')),  # URLs de autenticación
-    # path("blog/", include("blog.urls")),  # Comentado temporalmente por dependencias de MongoDB
+    path("blog/", include("blog.urls")),
     path("solicitudes/", include("solicitud_adopcion.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

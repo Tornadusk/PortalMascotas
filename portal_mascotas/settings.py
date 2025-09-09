@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'filtros',
     'solicitud_adopcion',
     'login',
-    # 'blog',  # Comentado temporalmente por dependencias de MongoDB
+    'blog',  
 ]
 
 # Configuración del modelo de usuario personalizado
@@ -115,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 # Idioma del proyecto - se puede cambiar a 'es-es' para español
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 # Zona horaria - se puede cambiar a 'America/Mexico_City' para México
 TIME_ZONE = 'UTC'
